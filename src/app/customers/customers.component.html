@@ -1,0 +1,105 @@
+<mat-card class="customer-card">
+  <mat-card-header class="customer-card_header" fxLayoutAlign="center">
+    <mat-card-title> Sign Up!</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center center" class="sign-up-form" #signupForm="ngForm"
+      novalidate (ngSubmit)="save(signupForm)">
+      <mat-form-field>
+        <input matInput type="text" placeholder="First Name" name="firstName" #firstNameVar="ngModel"
+          [(ngModel)]="customer.firstName" required minlength="3">
+        <mat-hint>required</mat-hint>
+        <span *ngIf="(firstNameVar.touched || firstNameVar.dirty) && firstNameVar.errors">
+          <mat-error *ngIf="firstNameVar.errors.required">Please enter first Name</mat-error>
+          <mat-error *ngIf="firstNameVar.errors.minlength">First name should be greater than 3 character</mat-error>
+        </span>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text" placeholder="Last Name" name=lastName #lastNameVar="ngModel"
+          [(ngModel)]="customer.lastName" required minlength="3">
+        <mat-hint>required</mat-hint>
+        <span *ngIf="(lastNameVar.touched || lastNameVar.dirty) && lastNameVar.errors">
+          <mat-error *ngIf="lastNameVar.errors.required">Please enter last name</mat-error>
+          <mat-error *ngIf="lastNameVar.errors.minlength">Last name should be greater than 3 character</mat-error>
+        </span>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="email" placeholder="Email" name="email" #emailVar="ngModel" [(ngModel)]="customer.email"
+          required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+">
+        <mat-hint>required</mat-hint>
+        <span *ngIf="(emailVar.touched || emailVar.dirty) && emailVar.errors">
+          <mat-error *ngIf="emailVar.errors.required">Please enter email</mat-error>
+          <mat-error *ngIf="emailVar.errors.pattern">Please enter valid email</mat-error>
+        </span>
+      </mat-form-field>
+      <div class="catlog-checkbox">
+        <mat-checkbox name="sendCatlog" #sendCatlogVar="ngModel" [(ngModel)]="customer.sendCatlog">Send me your catelog
+        </mat-checkbox>
+      </div>
+
+      <ng-container *ngIf="customer.sendCatlog" fxFlexAlign="center">
+        <mat-radio-group fxLayout="row" fxLayoutGap="10px" name="addressType" #addressType="ngModel"
+          [(ngModel)]="customer.addressType">
+          <mat-radio-button value="home">Home</mat-radio-button>
+          <mat-radio-button value="office">Office</mat-radio-button>
+          <mat-radio-button value="other">Other</mat-radio-button>
+        </mat-radio-group>
+
+        <mat-form-field>
+          <input matInput type="text" placeholder="street1" #street1Var="ngModel" [(ngModel)]="customer.street1"
+            name="street1" minlength="3">
+          <span *ngIf="(street1Var.touched || street1Var.dirty) && street1Var.errors">
+            <mat-error *ngIf="street1Var.errors.minlength">Street name should be atleast 3 character</mat-error>
+          </span>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput type="text" placeholder="street2" #street2Var="ngModel" [(ngModel)]="customer.street2"
+            name="street2" minlength="3">
+          <span *ngIf="(street2Var.touched || street2Var.dirty) && street2Var.errors">
+            <mat-error *ngIf="street2Var.errors.minlength">Street name should be atleast 3 character long</mat-error>
+          </span>
+        </mat-form-field>
+
+        <div fxLayout="row" fxLayoutAlign="space-evenly" class="addressGroup" fxLayoutGap="10px">
+          <mat-form-field>
+            <input matInput type="text" placeholder="city" #cityVar="ngModel" [(ngModel)]="customer.city" name="city">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>State</mat-label>
+            <mat-select #stateVar="ngModel" [(ngModel)]="customer.state" name="state">
+              <mat-option>None</mat-option>
+              <mat-option value="maharashtr">Maharashtr</mat-option>
+              <mat-option value="karnatak">Karnatak</mat-option>
+              <mat-option value="gujarat">Gujarat</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput type="text" placeholder="zip" #zipVar="ngModel" [(ngModel)]="customer.zip" name="zip">
+          </mat-form-field>
+        </div>
+
+      </ng-container>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="!signupForm.valid">Save</button>
+    </form>
+  </mat-card-content>
+</mat-card>
+
+<mat-list>
+  <mat-list-item>
+    <span>form touched: {{signupForm.touched}}</span>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+  <mat-list-item>
+    <span>form dirty: {{signupForm.dirty}}</span>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+  <mat-list-item>
+    <span>form valid: {{signupForm.valid}}</span>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+  <mat-list-item>
+    <span>form values: {{signupForm.value | json}}</span>
+  </mat-list-item>
+</mat-list>

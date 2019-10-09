@@ -1,0 +1,152 @@
+<mat-card fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="space-evenly center">
+  <mat-card-header>
+    Reactive Dynamic Sign-up.
+  </mat-card-header>
+  <mat-card-content>
+    <form (ngSubmit)="save()" [formGroup]="customerForm" class="customer-signup-form" fxLayout="column"
+      fxLayoutGap="10px">
+      <!-- name -->
+      <table cellspacing="0">
+        <tr fxFlex="100%" fxLayoutGap="20px">
+          <td fxFlex="50%">
+            <mat-form-field fxFill>
+              <input matInput type="text" placeholder="First Name" formControlName="firstName">
+              <mat-error
+                *ngIf="(firstNameControl.touched || firstNameControl.dirty)&& firstNameControl.hasError('required')">
+                Please enter your first name.
+              </mat-error>
+              <mat-error
+                *ngIf="(firstNameControl.touched || firstNameControl.dirty)&& firstNameControl.hasError('minlength')">
+                first name is at lease 3 character long.
+              </mat-error>
+            </mat-form-field>
+          </td>
+          <td fxFlex="50%">
+            <mat-form-field fxFill>
+              <input matInput type="text" placeholder="Last Name" formControlName="lastName">
+              <mat-error
+                *ngIf="(lastNameControl.touched || lastNameControl.dirty)&& lastNameControl.hasError('required')">
+                Please enter your first name.
+              </mat-error>
+              <mat-error
+                *ngIf="(lastNameControl.touched || lastNameControl.dirty)&& lastNameControl.hasError('minlength')">
+                first name is at lease 3 character long.
+              </mat-error>
+            </mat-form-field>
+          </td>
+        </tr>
+      </table>
+      <!-- Notification -->
+      <mat-radio-group id="send-notification" fxLayoutGap="20px" formControlName="sendNotification">
+        <mat-label for="send-notification">Send Notification's</mat-label>
+        <mat-radio-button value="email">Email</mat-radio-button>
+        <mat-radio-button value="phone">Phone</mat-radio-button>
+      </mat-radio-group>
+      <!-- Email -->
+      <ng-container formGroupName="emailGroup">
+        <table cellspacing="0" fxLayout="column">
+          <tr fxFlex="100%" fxLayoutGap="20px">
+            <td fxFlex="50%">
+              <mat-form-field fxFill>
+                <input matInput type="email" placeholder="Email" formControlName="email">
+                <mat-error *ngIf="(emailControl.touched || emailControl.dirty) && emailControl.hasError('required')">
+                  Please enter your email.
+                </mat-error>
+                <mat-error *ngIf="(emailControl.touched || emailControl.dirty) && emailControl.hasError('pattern')">
+                  Please enter valid email.
+                </mat-error>
+              </mat-form-field>
+            </td>
+            <td fxFlex="50%">
+              <mat-form-field fxFill>
+                <input matInput type="email" placeholder="Confirm Email" formControlName="confirmEmail">
+                <mat-error
+                  *ngIf="(confirmEmailControl.touched || confirmEmailControl.dirty) && confirmEmailControl.hasError('required')">
+                  Please re-enter email for confirmation.
+                </mat-error>
+              </mat-form-field>
+            </td>
+          </tr>
+          <mat-error *ngIf="(emailGroup.touched || emailGroup.dirty) && emailGroup.hasError('match')">
+            your emails are not matching.
+          </mat-error>
+        </table>
+      </ng-container>
+      <!-- Phone -->
+      <mat-form-field>
+        <input matInput type="number" placeholder="Phone Number" formControlName="phoneNumber">
+        <mat-error *ngIf="(phoneControl.touched || phoneControl.dirty) && phoneControl.hasError('required')">
+          Please enter phone number.
+        </mat-error>
+      </mat-form-field>
+      <!-- Is Send Catalog -->
+      <mat-checkbox formControlName="sendCatalog">Send me your catalog</mat-checkbox>
+
+      <!-- Address Type -->
+      <!-- <ng-container *ngIf="isSendCatalog" fxLayoutGap="20px"> -->
+        <button mat-raised-button color="accent" (click)="addAddress()" fxFill [disabled]="!addressesArray.valid">Add Another
+          Address</button>
+        <ng-container formArrayName="addresses" *ngFor="let address of addressesArray.controls; let i=index">
+          <hr *ngIf="i>0">
+          <ng-container [formGroupName]="i">
+                <mat-radio-group id="{{'address-type' + i}}" fxFlex="100%" fxLayoutGap="20px" formControlName="addressType">
+                <mat-label attr.for="{{'address-type' + i}}">Address Type</mat-label>
+                <mat-radio-button value="home">Home</mat-radio-button>
+                <mat-radio-button value="work">Work</mat-radio-button>
+                <mat-radio-button value="work">Other</mat-radio-button>
+                </mat-radio-group>
+                <!-- Street - 1 -->
+                <mat-form-field>
+                <input matInput type="text" placeholder="Street Address 1" formControlName="street1">
+                <mat-error *ngIf="(address.touched || address.dirty) && address.hasError('required', 'street1')">
+                    Please enter street address.
+                </mat-error>
+                </mat-form-field>
+                <!-- Street - 2 -->
+                <mat-form-field>
+                <input matInput type="text" placeholder="Street Address 2" formControlName="street2">
+                </mat-form-field>
+                <!-- City - State - Zip -->
+                <table cellspacing="0" fxFlex="100%">
+                <tr fxFlex="100%" fxLayoutGap="20px">
+                    <td fxFlex="calc(100/3)">
+                    <mat-form-field fxFill>
+                        <input matInput type="text" placeholder="City" formControlName="city">
+                        <!-- <mat-error *ngIf="(cityControl.touched || cityControl.dirty) && cityControl.hasError('required')">
+                        Please enter city.
+                        </mat-error> -->
+                    </mat-form-field>
+                    </td>
+                    <td fxFlex="calc(100/3)">
+                    <mat-form-field fxFill>
+                        <mat-select placeholder="Select a State" formControlName="state">
+                        <mat-option value="maharashtra">Maharashtra</mat-option>
+                        <mat-option value="Rajasthan">Rajasthan</mat-option>
+                        <mat-option value="karnataka">Karnataka</mat-option>
+                        </mat-select>
+                        <!-- <mat-error
+                        *ngIf="(stateControl.touched || stateControl.dirty) && stateControl.hasError('required')">
+                        Please select state.
+                        </mat-error> -->
+                    </mat-form-field>
+                    </td>
+                    <td fxFlex="calc(100/3)">
+                    <mat-form-field fxFill>
+                        <input matInput type="number" placeholder="Zip Code" formControlName="zip">
+                        <!-- <mat-error *ngIf="(zipControl.touched || zipControl.dirty) && zipControl.hasError('required')">
+                        Please enter zip.
+                        </mat-error> -->
+                    </mat-form-field>
+                    </td>
+                </tr>
+                </table>
+          </ng-container>
+        <!-- </ng-container> -->
+      </ng-container>
+
+      <button type="submit" mat-raised-button color="accent" fxFlexAlign="center"
+        [disabled]="!customerForm.valid">Save</button>
+    </form>
+    <button mat-raised-button (click)="values()"> values</button>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,97 @@
+<mat-card>
+  <mat-card-header fxLayout="row" fxLayoutAlign="center">
+    <mat-card-title>Sign Up..!</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+
+    <form (ngSubmit)="save()" [formGroup]="customerForm" fxLayout="column" fxLayoutGap="20px">
+
+      <mat-form-field>
+        <input matInput type="text" placeholder="First Name" formControlName="firstName">
+        <mat-error *ngIf="(firstName.touched || firstName.dirty) && firstName.hasError('required')">Please enter your
+          last name</mat-error>
+        <mat-error *ngIf="(firstName.touched || firstName.dirty) && firstName.hasError('minlength')">Last Name atleast 3
+          character long</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput type="text" placeholder="last Name" formControlName="lastName">
+        <mat-error *ngIf="(lastName.touched || lastName.dirty) && lastName.hasError('required')">Please enter your last
+          name</mat-error>
+        <mat-error *ngIf="(lastName.touched || lastName.dirty) && lastName.hasError('minlength')">Last Name atleast 3
+          character long</mat-error>
+      </mat-form-field>
+
+      <div formGroupName="emailGroup" fxLayout="column" fxLayoutGap="20px">
+        <mat-form-field>
+          <input matInput type="text" placeholder="Email" formControlName="email">
+          <!-- <mat-error *ngIf="(email.touched || email.dirty) && email.hasError('required')">Please enter your email
+          </mat-error>
+          <mat-error *ngIf="(email.touched || email.dirty) && email.hasError('pattern')">Please enter valid email
+          </mat-error> -->
+          <mat-error *ngIf="emailMessage">{{emailMessage}}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput type="text" placeholder="Confirm email" formControlName="confirmEmail">
+          <mat-error *ngIf="(confirmEmail.touched || confirmEmail.dirty) && confirmEmail.hasError('required')"> plese
+            enter email to confirm</mat-error>
+        </mat-form-field>
+        <mat-error *ngIf="(emailgroup.touched || emailgroup.dirty) && emailgroup.hasError('match')"> Please provide
+          email same as above
+        </mat-error>
+
+      </div>
+
+      <mat-form-field>
+        <input matInput type="number" placeholder="Phone" formControlName="phone">
+        <mat-error *ngIf="(phone.touched || phone.dirty) && phone.hasError('required')">Please enter your phone
+        </mat-error>
+      </mat-form-field>
+
+      <mat-radio-group fxLayoutGap="10px" formControlName="notification">
+        <label>Send Notifications</label>
+        <mat-radio-button value="email">Email
+        </mat-radio-button>
+        <mat-radio-button value="text">Phone
+        </mat-radio-button>
+      </mat-radio-group>
+
+      <mat-form-field>
+        <input matInput type="number" placeholder="Rating" formControlName="rating">
+        <mat-error *ngIf="(rating.touched || rating.dirty) && rating.hasError('range')">Please enter product rating
+          between 1 to 5</mat-error>
+      </mat-form-field>
+
+      <div class="sendCatlog">
+        <mat-checkbox formControlName="sendCatlog">Send Catlog</mat-checkbox>
+      </div>
+
+      <div fxLayoutGap="10px">
+        <button mat-raised-button color="primary" type="submit">Submit</button>
+        <button mat-raised-button color="accent" (click)="populateTestData()">Test Data</button>
+
+      </div>
+    </form>
+
+  </mat-card-content>
+</mat-card>
+<button mat-raised-button color="accent" (click)="print()">Test</button>
+
+<mat-list>
+  <mat-list-item>
+    <span>form touched: {{customerForm.touched}}</span>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+  <mat-list-item>
+    <span>form dirty: {{customerForm.dirty}}</span>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+  <mat-list-item>
+    <span>form valid: {{customerForm.valid}}</span>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+  <mat-list-item>
+    <span>form values: {{customerForm.value | json}}</span>
+  </mat-list-item>
+</mat-list>
